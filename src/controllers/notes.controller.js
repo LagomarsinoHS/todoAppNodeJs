@@ -9,7 +9,7 @@ notesController.renderNoteForm = (req, res) => {
 notesController.createNewNote = async (req, res) => {
     try {
         const { title, description } = req.body
-        const newNote = new Notes({ title, description }) // Creo una instancia de Note, le doy sus valores
+        const newNote = new Notes({ title, description, user_id: req.user.id }) // Creo una instancia de Note, le doy sus valores
         await newNote.save() // Uso la propiedad Save del modelo y esto intenta guardar en la bd
         req.flash("success_msg", "Nota Agregada!")
         res.redirect("/notes")
@@ -21,13 +21,18 @@ notesController.createNewNote = async (req, res) => {
 };
 
 notesController.renderAllNotes = async (req, res) => {
-    const allNotes = await Notes.find().lean()
+    const allNotes = await Notes.find({ user_id: req.user.id }).sort({ createdAt: "desc" }).lean()
     res.render("notes/allNotes", { allNotes })
 };
 
 notesController.renderEditForm = async (req, res) => {
-    const { title, description, _id } = await Notes.findById(req.params.id)
-    console.log(title, description, _id)
+    //OJO el _id es lo que crea mongo automaticamente, el user_id es lo que yo cree
+    const { title, description, _id, user_id } = await Notes.findById(req.params.id)
+    console.log(user_id, req.user.id)
+    if (user_id != req.user.id) {
+        req.flash("error_msg", "No estas autorizado")
+        return res.redirect("/notes")
+    }
     res.render("notes/editNote", { title, description, _id })
 };
 

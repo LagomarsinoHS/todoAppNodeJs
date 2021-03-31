@@ -1,7 +1,9 @@
-const userController = {};
 const User = require("../models/Users");
 const passport = require("passport");
+const fn = require("../utils/functions")
 
+
+const userController = {};
 
 userController.renderSignUpForm = (req, res) => {
     res.render("users/signUp")
@@ -26,7 +28,7 @@ userController.signUp = async (req, res) => {
             res.redirect("/users/signup", { name, password })
         } else {
             const newUser = new User({ name, email, password })
-            newUser.password = await newUser.encryptPassword(password)
+            newUser.password = await fn.encryptPassword(password)
             await newUser.save()
             req.flash("success_msg", "Usuario Registrado con Exito!")
             res.redirect("/users/signin")
@@ -51,3 +53,4 @@ userController.logOut = (req, res) => {
 }
 
 module.exports = userController;
+

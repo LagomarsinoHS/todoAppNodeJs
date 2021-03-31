@@ -5,12 +5,14 @@ const SCHEMA = mongoose.Schema
 const Notes = new SCHEMA({
     title: {
         type: String,
-        unique: true,
         required: true,
     },
     description: {
         type: String,
         required: true
+    },
+    user_id: {
+        type: String
     }
 }, {
     timestamps: true //

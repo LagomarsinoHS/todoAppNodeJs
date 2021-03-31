@@ -1,6 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("../models/Users")
+const User = require("../models/Users");
+const fn = require("../utils/functions");
 
 //Le paso los campos que guardará la sesión
 //Login es el nombre que utilizara para indicar que tiene que usar este
@@ -9,14 +10,13 @@ passport.use("login", new LocalStrategy({
     passwordField: "password"
     //y aqui hago las validaciones que quiera
 }, async (email, password, done) => {
-
     //Ver si existe el correo del usuario
     const user = await User.findOne({ email })
     if (!user) {
         return done(null, false, { message: "Usuario no encontrado" })
     } else {
         //Verificar contraseña
-        const match = await user.decryptPassword(password)
+        const match = await fn.decryptPassword(password, user.password)
         if (match) {
             //En el caso que todo este correcto, retorna el usuario
             return done(null, user)
