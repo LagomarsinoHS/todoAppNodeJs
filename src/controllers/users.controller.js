@@ -6,7 +6,7 @@ const fn = require("../utils/functions")
 const userController = {};
 
 userController.renderSignUpForm = (req, res) => {
-    res.render("users/signUp")
+    res.render("users/signup")
 };
 
 userController.signUp = async (req, res) => {
@@ -37,7 +37,7 @@ userController.signUp = async (req, res) => {
 };
 
 userController.renderSignInForm = (req, res) => {
-    res.render("users/signIn")
+    res.render("users/signin")
 };
 
 userController.signIn = passport.authenticate("login", {
