@@ -1,0 +1,6 @@
+MONGODB_USER = "Usuario de mongoDB"
+MONGODB_PASS = "Password de  mongoDB"
+MONGODB_HOST = "@Host de mongo DB"
+MONGODB_BD = "Nombre de la BD que usarás, puede ser cualquiera y se creará automaticamente"
+
+#Recordar cambiar el nombre de este archivo a .env
